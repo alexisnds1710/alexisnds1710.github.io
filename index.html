@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Riesgo</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>Calculador Nivel de Riesgo</header>
+
+        <form id="riskForm">
+            <div class="form">  
+                    <span class="title">Nombre Completo</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label for="Primer Nombre"></label>
+                            <input type="text" placeholder="Primer Nombre">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="Segundo Nombre"></label>
+                            <input type="text" placeholder="Segundo Nombre">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="Primer Apellido"></label>
+                            <input type="text" placeholder="Primer Apellido">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="Segundo Apellido"></label>
+                            <input type="text" placeholder="Segundo Apellido">
+                        </div>
+                    </div>
+
+                    <div class="fields2">
+                        <div class="select-field">
+                            <label for="Genero">Genero</label>
+                            <select name="Genero">
+                                <option value="" disabled selected>Seleccionar</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                            </select> 
+                        </div>
+
+                        <div class="select-field">
+                            <label for="PaisN">Pais de Nacimiento</label>
+                            <select name="PaisN" required>
+                                <option value="" disabled selected>Seleccionar</option>
+                                <option value="100">Panamá</option>
+                                <option value="200">Otros países</option>
+                            </select> 
+                        </div>
+
+                        <div class="select-field">
+                            <label for="PaisR">Pais de Residencia</label>
+                            <select name="PaisR" required>
+                                <option value="" disabled selected>Seleccionar</option>
+                                <option value="100">Panamá</option>
+                                <option value="200">Otros Paises</option>
+                            </select> 
+                        </div>
+
+                        <div class="select-field">
+                            <label for="Profesion">Profesion</label>
+                            <select name="Profesion" required>
+                                <option value="" disabled selected>Seleccionar</option>
+                                <option value="100">Abogado</option>
+                                <option value="200">Ingeniero</option>
+                                <option value="300">Medico</option>
+                                <option value="400">Contador</option>
+                                <option value="500">Otras</option>
+                            </select> 
+                        </div>
+
+                        <div class="select-field">
+                            <label for="Edad">Edad</label>
+                            <input type="number" name="Edad" placeholder="Ingrese la edad" required>
+                        </div>
+
+                        <div class="select-field">
+                            <label for="Ingresos">Nivel de Ingresos</label>
+                            <select name="Ingresos" required>
+                                <option value="" disabled selected>Seleccionar</option>
+                                <option value="100">Menos de 20k anual</option>
+                                <option value="200">Entre 20k y 75k</option>
+                                <option value="300">Mayor de 75k - 300</option>
+                            </select>
+                        </div>
+
+                        <div class="select-field">
+                            <label for="PEP">¿Es un PEP?</label>
+                            <select name="PEP" required>
+                                <option value="" disabled selected>Seleccionar</option>
+                                <option value="Si">Si</option>
+                                <option value="100">No</option>
+                                <option value="200">NO</option>
+                            </select>
+                        </div>
+
+                    </div>
+            </div>
+            <div class="botones">
+                <input type="submit" name="enviar">
+                <input type="reset" name="Reset">
+            </div>  
+        </form>
+        <p id="mensaje"></p>
+    </div>
+    <script>
+        document.getElementById("riskForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const selectedGenero = document.querySelector('[name="Genero"]').value;
+            const selectedPaisN = document.querySelector('[name="PaisN"]').value;
+            const selectedPaisR = document.querySelector('[name="PaisR"]').value;
+            const selectedProfesion = document.querySelector('[name="Profesion"]').value;
+            const edad = parseFloat(document.querySelector('[name="Edad"]').value);
+            const nivelIngresos = parseFloat(document.querySelector('[name="Ingresos"]').value);
+            const pep = document.querySelector('[name="PEP"]').value === "Si" ? true : false;
+            const pep2 = parseFloat(document.querySelector('[name="PEP"]').value);
+            
+            if (selectedPaisN === "" || selectedPaisR === "" ||
+                selectedProfesion === "") {
+                document.getElementById("mensaje").textContent = "Por favor, complete todos los campos.";
+                return;
+            }
+
+            let nivelRiesgo = (parseFloat(selectedPaisN) * 0.1) + (parseFloat(selectedPaisR) * 0.1) + 
+                              (parseFloat(selectedProfesion) * 0.2) + (edad * 0.1) + 
+                              (nivelIngresos * 0.2) + (pep2 * 0.1);
+
+            if (pep) {
+                nivelRiesgo = 1401;
+            }
+
+            let mensaje = "";
+
+            if (nivelRiesgo < 1200) {
+                mensaje = "Bajo";
+            } else if (nivelRiesgo >= 1201 && nivelRiesgo <= 1400) {
+                mensaje = "Medio";
+            } else {
+                mensaje = "Alto";
+            }
+
+            document.getElementById("mensaje").textContent = "Nivel de riesgo: " + mensaje;
+        });
+    </script>
+</body>
+</html>
